@@ -3,42 +3,56 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* Desain simpel biar mata gak capek */
+        /* Desain High Contrast buat mata kanan lu [cite: 2026-01-20] */
         body { background: #121212; color: white; font-family: sans-serif; padding: 20px; }
-        input, select, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; }
-        .wajah-tool { display: none; } /* Awalnya semua wajah sembunyi */
-        .aktif { display: block; }    /* Cuma yang aktif yang muncul */
+        .box { background: #1e1e1e; padding: 20px; border-radius: 12px; }
+        input, select, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; font-size: 16px; }
+        button { background: #0070f3; color: white; font-weight: bold; cursor: pointer; }
+        .wajah-tool { display: none; }
+        .aktif { display: block; }
     </style>
 </head>
 <body>
-    <h2>Frameless Multi-Portal</h2>
-    <form method="POST">
-        <select name="tool_type" id="pilihTool" onchange="gantiWajah()">
-            <option value="finance">Finance Tool</option>
-            <option value="sticker">Sticker Tool</option>
-        </select>
+    <div class="box">
+        <h2>Frameless Multi-Portal</h2>
+        
+        <form method="POST">
+            <label>Pilih Alat:</label>
+            <select name="tool_type" id="pilihTool" onchange="gantiWajah()">
+                <option value="finance" {% if tool_aktif == 'finance' %}selected{% endif %}>
+                    Kalkulator Finance
+                </option>
+                <option value="sticker" {% if tool_aktif == 'sticker' %}selected{% endif %}>
+                    Kalkulator Sticker
+                </option>
+            </select>
 
-        {% include 'tools/finance.html' %}
-        {% include 'tools/sticker.html' %}
+            {% include 'tools/finance.html' %}
+            {% include 'tools/sticker.html' %}
 
-        <button type="submit" style="background: #0070f3; color: white;">HITUNG</button>
-    </form>
+            <button type="submit">EKSEKUSI SEKARANG</button>
+        </form>
 
-    {% if hasil %}
-        <div style="background: #333; padding: 10px; margin-top: 20px;">
-            <strong>Hasil: {{ hasil }}</strong>
-        </div>
-    {% endif %}
+        {% if hasil %}
+            <div style="background: #333; padding: 15px; margin-top: 20px; border-radius: 8px;">
+                <strong>Hasil: {{ hasil }}</strong>
+            </div>
+        {% endif %}
+    </div>
 
     <script>
-        // Fungsi buat ganti-ganti wajah alat tanpa pindah halaman
+        // Fungsi JS buat ganti wajah tanpa refresh
         function gantiWajah() {
             var selected = document.getElementById("pilihTool").value;
-            // Sembunyiin semua wajah
+            // Sembunyiin semua dulu
             document.querySelectorAll('.wajah-tool').forEach(el => el.classList.remove('aktif'));
-            // Munculin wajah yang diklik
+            // Munculin yang dipilih
             document.getElementById("wajah_" + selected).classList.add('aktif');
         }
+
+        // Jalankan fungsi saat halaman beres loading
+        window.onload = gantiWajah;
     </script>
 </body>
 </html>
+
