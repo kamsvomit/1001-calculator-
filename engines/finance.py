@@ -1,9 +1,18 @@
-# Ini 'Dapur' tempat lu masak rumus. 
-# Lu bikin fungsinya mandiri di sini.
+# File: engines/finance.py
 
 def calculate_finance(masa_kerja, gaji):
-    # Rumus: Masa kerja dibagi 12 bulan dikali gaji
-    hasil = (masa_kerja / 12) * gaji
-    
-    # Balikin hasilnya dalam format Rupiah biar cantik
-    return f"Rp {hasil:,.0f}"
+    # Kita paksa input jadi angka (float) biar bisa dihitung matematikanya
+    # [cite: 2026-01-25]
+    try:
+        angka_masa_kerja = float(masa_kerja)
+        angka_gaji = float(gaji)
+        
+        # Sekarang baru kita hitung: (Bulan / 12) * Gaji
+        hasil = (angka_masa_kerja / 12) * angka_gaji
+        
+        # Balikin hasilnya dengan format Rupiah
+        return f"Rp {hasil:,.0f}"
+    except:
+        # Kalo user masukin huruf, bukan angka, kasih tau biar gak error
+        return "Input harus angka, Beb!"
+        
