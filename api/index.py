@@ -1,35 +1,28 @@
 # File: api/index.py
-from flask import Flask, render_template, request
-
-# Import mesin lu dari folder engines
-from engines.finance import calculate_finance
-# (Kalo sticker.py belum ada, baris di bawah ini di-comment dulu pake #)
-from engines.sticker import calculate_sticker 
-
-app = Flask(__name__, template_folder='../templates')
-
 @app.route("/", methods=["GET", "POST"])
 def home():
     hasil = None
-    tipe = "finance" # Default pas web pertama kali dibuka
+    tipe = "finance" # Default
     
     if request.method == "POST":
-        # Ambil pilihan dari dropdown
         tipe = request.form.get("tool_type")
         
-        # JALUR 1: KALKULATOR FINANCE
         if tipe == "finance":
-            m = request.form.get("masa_kerja", 0)
-            g = request.form.get("gaji", 0)
-            hasil = calculate_finance(m, g) # Panggil dapur finance
+            # Ambil data murni, jangan diconvert di sini!
+            m = request.form.get("masa_kerja")
+            g = request.form.get("gaji")
             
-        # JALUR 2: KALKULATOR STIKER FRAMELESS [cite: 2026-01-31]
+            # Cek manual: Kalo datanya beneran nyampe, baru panggil mesin
+            if m and g:
+                hasil = calculate_finance(m, g)
+            else:
+                hasil = "Duh Beb, datanya nggak nyampe ke Python. Cek input lu!"
+                
         elif tipe == "sticker":
-            l = request.form.get("lebar", 0)
-            p = request.form.get("panjang", 0)
-            q = request.form.get("qty", 0)
-            hasil = calculate_sticker(l, p, q) # Panggil dapur stiker
+            l = request.form.get("lebar")
+            p = request.form.get("panjang")
+            q = request.form.get("qty")
+            hasil = calculate_sticker(l, p, q)
 
-    # KUNCINYA: Lempar balik 'tipe' ke web sebagai 'tool_aktif'
     return render_template("index.html", hasil=hasil, tool_aktif=tipe)
-        
+    
