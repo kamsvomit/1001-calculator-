@@ -1,15 +1,15 @@
 {
-  "version": 2, // Pake sistem Vercel versi terbaru
+  "version": 2,
   "builds": [
     {
-      "src": "api/index.py", // Kasih tau Vercel: "Otak web gue ada di sini"
-      "use": "@vercel/python" // Perintah: "Rakit pake mesin Python"
+      "src": "api/index.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)", // Kalo orang ngetik alamat apa pun di browser...
-      "dest": "api/index.py" // ...semuanya arahin ke file index.py tadi
+      "src": "/(.*)",
+      "dest": "api/index.py"
     }
   ]
 }
