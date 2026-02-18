@@ -19,15 +19,15 @@ def home():
         
         # JALUR 1: KALKULATOR FINANCE
         if tipe == "finance":
-            m = float(request.form.get("masa_kerja", 0))
-            g = float(request.form.get("gaji", 0))
+            m = request.form.get("masa_kerja", 0)
+            g = request.form.get("gaji", 0)
             hasil = calculate_finance(m, g) # Panggil dapur finance
             
         # JALUR 2: KALKULATOR STIKER FRAMELESS [cite: 2026-01-31]
         elif tipe == "sticker":
-            l = float(request.form.get("lebar", 0))
-            p = float(request.form.get("panjang", 0))
-            q = int(request.form.get("qty", 0))
+            l = request.form.get("lebar", 0)
+            p = request.form.get("panjang", 0)
+            q = request.form.get("qty", 0)
             hasil = calculate_sticker(l, p, q) # Panggil dapur stiker
 
     # KUNCINYA: Lempar balik 'tipe' ke web sebagai 'tool_aktif'
