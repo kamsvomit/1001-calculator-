@@ -14,7 +14,7 @@ def calculate_finance(masa_kerja, gaji):
         
         # RUMUS MATEMATIKA JATAH FRAMELESS [cite: 2026-01-31]
         # (Masa Kerja / 12 Bulan) x Gaji
-        hitung = (m / 12) * g
+        hitung = m / 12 * g
         
         # Balikin hasil dengan format Rp dan pemisah ribuan
         return f"Rp {hitung:,.0f}"
