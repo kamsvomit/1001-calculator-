@@ -1,32 +1,29 @@
-import os
 from flask import Flask, render_template, request
+from engines.finance import calculate_finance
+from engines.sticker import calculate_sticker # <-- Import mesin baru lu
 
-# --- MESIN FINANCE (Kita taruh sini dulu biar gak error import) ---
-def calculate_finance(masa_kerja, gaji):
-    hasil = (float(masa_kerja) / 12) * float(gaji)
-    return f"Rp {hasil:,.0f}"
-
-# --- SETTING KABEL (Vercel Safe) ---
-# Kita kasih tau Flask posisi folder template secara detail
-base_dir = os.path.abspath(os.path.dirname(__file__))
-template_dir = os.path.join(base_dir, '..', 'templates')
-
-app = Flask(__name__, template_folder=template_dir)
+app = Flask(__name__, template_folder='../templates')
 
 @app.route("/", methods=["GET", "POST"])
 def home():
     hasil = None
-    tipe = "finance"
-    
-    try:
-        if request.method == "POST":
-            tipe = request.form.get("tool_type")
-            if tipe == "finance":
-                m = request.form.get("masa_kerja", 0)
-                g = request.form.get("gaji", 0)
-                hasil = calculate_finance(m, g)
-    except Exception as e:
-        # Kalo error, tampilin pesannya di web biar kita tau salahnya apa
-        hasil = f"Error: {str(e)}"
+    tipe = "finance" # Default pas dibuka
+
+    if request.method == "POST":
+        tipe = request.form.get("tool_type")
         
+        # Pintu 1: Kalo user pilih finance
+        if tipe == "finance":
+            m = float(request.form.get("masa_kerja", 0))
+            g = float(request.form.get("gaji", 0))
+            hasil = calculate_finance(m, g)
+            
+        # Pintu 2: Kalo user pilih sticker
+        elif tipe == "sticker":
+            l = float(request.form.get("lebar", 0))
+            p = float(request.form.get("panjang", 0))
+            q = int(request.form.get("qty", 0))
+            hasil = calculate_sticker(l, p, q) # <-- Panggil mesin stiker
+            
     return render_template("index.html", hasil=hasil, tool_aktif=tipe)
+            
