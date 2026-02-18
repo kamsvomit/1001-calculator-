@@ -1,0 +1,3 @@
+# Ini daftar belanjaan. Vercel bakal baca file ini 
+# buat instal library Flask biar web lu bisa jalan.
+flask
