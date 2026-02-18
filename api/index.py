@@ -19,8 +19,8 @@ def home():
         
         # JALUR 1: KALKULATOR FINANCE
         if tipe == "finance":
-            m = float(request.form.get("masa_kerja", 0))
-            g = float(request.form.get("gaji", 0))
+            m = float(request.form.get("angka_masa_kerja", 0))
+            g = float(request.form.get("angka_gaji", 0))
             hasil = calculate_finance(m, g) # Panggil dapur finance
             
         # JALUR 2: KALKULATOR STIKER FRAMELESS [cite: 2026-01-31]
