@@ -1,20 +1,20 @@
 # File: engines/finance.py
 
 def calculate_finance(masa_kerja, gaji):
-    # STEP 1: Kita liat dulu datanya ada atau nggak
-    if not masa_kerja or not gaji:
-        return f"Waduh! Python dapet data kosong. Cek 'name' di HTML lu, Beb. (Data: m={masa_kerja}, g={gaji})"
-
     try:
-        # STEP 2: Paksa jadi angka [cite: 2026-01-25]
-        m = float(masa_kerja)
-        g = float(gaji)
+        # Konversi aman: Kalo kosong ganti jadi 0 [cite: 2026-01-25]
+        m = float(masa_kerja or 0)
+        g = float(gaji or 0)
         
-        # STEP 3: Hitung matematika murni [cite: 2026-01-31]
-        hasil = (m / 12) * g
-        return f"Rp {hasil:,.0f}"
+        if m == 0 or g == 0:
+            return "Isi dulu angkanya yang bener, Beb!"
+
+        # Rumus Jatah Frameless Industries [cite: 2026-01-31]
+        $$Hasil = \left( \frac{m}{12} \right) \times g$$
+        
+        total = (m / 12) * g
+        return f"Rp {total:,.0f}"
         
     except Exception as e:
-        # STEP 4: Kalo gagal, kasih tau error-nya apa
-        return f"Gagal Hitung! Error: {str(e)}. Data dapetnya: {masa_kerja}"
+        return f"Ada masalah di mesin: {str(e)}"
         
